@@ -4,6 +4,8 @@ const playNoiseBtn = document.getElementById('play-noise');
 let audioContext;
 let gainNode;
 let delayNode;
+let filterNode;
+let feedbackNode;
 
 // Function to start the audio context
 const startAudioContext = () => {
@@ -16,20 +18,22 @@ const startAudioContext = () => {
 // Function to set up the synth
 const setupSynth = () => {
     startAudioContext();
-    if (!gainNode) {
-        gainNode = audioContext.createGain();
+    if (!delayNode) {
         delayNode = audioContext.createDelay();
         feedbackNode = audioContext.createGain();
+        filterNode = audioContext.createBiquadFilter();
 
-        delayNode.delayTime.value = 0.1;  // Delay time for the echo effect
-        feedbackNode.gain.value = 0.5; // Feedback amount (decay level)
+        delayNode.delayTime.value = 0.01;  // Adjusted delay time (e.g., 20ms for a mid-range pitch)
+        feedbackNode.gain.value = 0.7;   // Adjusted feedback gain
+        filterNode.type = 'lowpass';
+        filterNode.frequency.value = 500;  // Adjusted filter frequency
 
         // Connect nodes
-        delayNode.connect(feedbackNode);
-        feedbackNode.connect(delayNode); // Feedback loop
+        delayNode.connect(filterNode);
+        filterNode.connect(feedbackNode);
+        feedbackNode.connect(delayNode);
 
-        gainNode.connect(delayNode);
-        delayNode.connect(audioContext.destination);
+        feedbackNode.connect(audioContext.destination);
     }
 }
 
@@ -52,7 +56,7 @@ const playNoise = () => {
     whiteNoise.connect(delayNode);
 
     whiteNoise.start();
-    whiteNoise.stop(audioContext.currentTime + 0.1);
+    whiteNoise.stop(audioContext.currentTime + 0.01); 
 }
 
 // Attach the event listener
