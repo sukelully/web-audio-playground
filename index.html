@@ -23,7 +23,7 @@
         </div>
         <div class="row">
             <div class="col-9 text-center">
-                <input type="range" class="slider" id="delay-slider" min="0.001" max="0.1" value="0.01" step="0.001">
+                <input type="range" class="slider" id="delay-slider" min="0.0001" max="0.025" value="0.01" step="0.0001">
                 <br>
                 <span id="delay-value">0.01</span>
             </div>
@@ -39,6 +39,16 @@
             </div>
             <div class="col-3 text-center">
                 <h4>Feedback gain</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9 text-center">
+                <input type="range" class="slider" id="freq-slider" min="250" max="3000" value="500" step="1">
+                <br>
+                <span id="freq-value">500</span>
+            </div>
+            <div class="col-3 text-center">
+                <h4>Filter frequency (Hz)</h4>
             </div>
         </div>
     </div>

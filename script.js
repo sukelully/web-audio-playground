@@ -3,10 +3,13 @@ const delaySlider = document.getElementById('delay-slider');
 const delayValue = document.getElementById('delay-value');
 const feedbackSlider = document.getElementById('feedback-slider');
 const feedbackValue = document.getElementById('feedback-value');
+const freqSlider = document.getElementById('freq-slider');
+const freqValue = document.getElementById('freq-value');
 
 
 // Global variables
 let audioContext;
+let noiseNode
 let gainNode;
 let delayNode;
 let filterNode;
@@ -25,18 +28,22 @@ const setupSynth = () => {
     startAudioContext();
     if (!delayNode) {
         delayNode = audioContext.createDelay();
+        gainNode = audioContext.createGain();
         feedbackNode = audioContext.createGain();
         filterNode = audioContext.createBiquadFilter();
 
         delayNode.delayTime.value = 0.01;  // Adjusted delay time (e.g., 20ms for a mid-range pitch)
-        feedbackNode.gain.value = 0.7;   // Adjusted feedback gain
+        gainNode.gain.value = 0.4;
+        feedbackNode.gain.value = 0.7;
         filterNode.type = 'lowpass';
-        filterNode.frequency.value = 500;  // Adjusted filter frequency
+        filterNode.frequency.value = 7000; 
+        filterNode.Q.value = 1;
 
         // Connect nodes
-        delayNode.connect(filterNode);
-        filterNode.connect(feedbackNode);
-        feedbackNode.connect(delayNode);
+
+        // delayNode.connect(filterNode);
+        // filterNode.connect(feedbackNode);
+        // feedbackNode.connect(delayNode);
 
         feedbackNode.connect(audioContext.destination);
     }
@@ -55,14 +62,14 @@ const playNoise = () => {
         output[i] = Math.random() * 2 - 1;
     }
 
-    const whiteNoise = audioContext.createBufferSource();
-    whiteNoise.buffer = noiseBuffer;
-    whiteNoise.loop = true;
-    whiteNoise.connect(delayNode);
+    noiseNode = audioContext.createBufferSource();
+    noiseNode.buffer = noiseBuffer;
+    noiseNode.loop = true;
+    noiseNode.connect(delayNode);
     // whiteNoise.connect(audioContext.destination);
 
-    whiteNoise.start();
-    whiteNoise.stop(audioContext.currentTime + 0.01); 
+    noiseNode.start();
+    noiseNode.stop(audioContext.currentTime + 0.01); 
 }
 
 // Event listeners
@@ -76,4 +83,9 @@ delaySlider.oninput = function() {
 feedbackSlider.oninput = function() {
     feedbackValue.innerHTML = this.value;
     feedbackNode.gain.value = this.value;
+}
+
+freqSlider.oninput = function() {
+    freqValue.innerHTML = this.value;
+    filterNode.frequency.value = this.value;
 }
