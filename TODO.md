@@ -1,1 +1,1 @@
-- [ ] 
+- [ ] Random amount of time for noise burst
