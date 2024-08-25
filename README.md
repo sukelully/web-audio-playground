@@ -1,2 +1,3 @@
 # web-audio-playground
-Repo for learning the Web Audio API
+Repo for learning the Web Audio API.
+

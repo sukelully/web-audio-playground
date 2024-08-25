@@ -1,4 +1,7 @@
 const playNoiseBtn = document.getElementById('play-noise');
+const delaySlider = document.getElementById('delay-slider');
+const feedbackSlider = document.getElementById('feedback-feedbacklider');
+
 
 // Global variables
 let audioContext;
