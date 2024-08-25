@@ -1,6 +1,8 @@
 const playNoiseBtn = document.getElementById('play-noise');
 const delaySlider = document.getElementById('delay-slider');
-const feedbackSlider = document.getElementById('feedback-feedbacklider');
+const delayValue = document.getElementById('delay-value');
+const feedbackSlider = document.getElementById('feedback-slider');
+const feedbackValue = document.getElementById('feedback-value');
 
 
 // Global variables
@@ -63,5 +65,13 @@ const playNoise = () => {
     whiteNoise.stop(audioContext.currentTime + 0.01); 
 }
 
-// Attach the event listener
+// Event listeners
 playNoiseBtn.addEventListener('click', playNoise);
+
+delaySlider.oninput = function() {
+    delayValue.innerHTML = this.value;
+}
+
+feedbackSlider.oninput = function() {
+    feedbackValue.innerHTML = this.value;
+}
