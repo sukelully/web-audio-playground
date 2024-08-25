@@ -32,18 +32,20 @@ const setupSynth = () => {
         feedbackNode = audioContext.createGain();
         filterNode = audioContext.createBiquadFilter();
 
-        delayNode.delayTime.value = 0.01;  // Adjusted delay time (e.g., 20ms for a mid-range pitch)
+        delayNode.delayTime.value = 0.001;  // Adjusted delay time (e.g., 20ms for a mid-range pitch)
         gainNode.gain.value = 0.4;
         feedbackNode.gain.value = 0.7;
         filterNode.type = 'lowpass';
-        filterNode.frequency.value = 7000; 
-        filterNode.Q.value = 1;
+        filterNode.frequency.value = 500; 
+        filterNode.Q.value = 0.9;
 
         // Connect nodes
-
-        // delayNode.connect(filterNode);
-        // filterNode.connect(feedbackNode);
-        // feedbackNode.connect(delayNode);
+        gainNode.connect(audioContext.destination);
+        gainNode.connect(delayNode);
+        delayNode.connect(feedbackNode);
+        feedbackNode.connect(filterNode);
+        filterNode.connect(delayNode);
+        filterNode.connect(audioContext.destination);
 
         feedbackNode.connect(audioContext.destination);
     }
@@ -65,8 +67,7 @@ const playNoise = () => {
     noiseNode = audioContext.createBufferSource();
     noiseNode.buffer = noiseBuffer;
     noiseNode.loop = true;
-    noiseNode.connect(delayNode);
-    // whiteNoise.connect(audioContext.destination);
+    noiseNode.connect(gainNode);
 
     noiseNode.start();
     noiseNode.stop(audioContext.currentTime + 0.01); 
