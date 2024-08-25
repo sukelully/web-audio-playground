@@ -70,8 +70,10 @@ playNoiseBtn.addEventListener('click', playNoise);
 
 delaySlider.oninput = function() {
     delayValue.innerHTML = this.value;
+    delayNode.delayTime.value = this.value;
 }
 
 feedbackSlider.oninput = function() {
     feedbackValue.innerHTML = this.value;
+    feedbackNode.gain.value = this.value;
 }
