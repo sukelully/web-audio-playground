@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 html, body {
     margin: 0;
@@ -7,10 +7,11 @@ html, body {
 }
 
 .btn, .text-center {
-    font-family: 'Playfair Display', serif !important;
+    font-family: 'PT Serif', serif !important;
 }
 
-/* .slider {
+.slider {
+    width: 100%;
     height: 8px;
     background: #ddd;
     outline: none;
@@ -20,7 +21,7 @@ html, body {
 
 .slider:hover {
     opacity: 1;
-} */
+}
 
 .container {
     margin-top: 5em;
