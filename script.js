@@ -3,6 +3,7 @@ const playNoiseBtn = document.getElementById('play-noise');
 // Global variables
 let audioContext;
 let gainNode;
+let delayNode;
 
 // Function to start the audio context
 const startAudioContext = () => {
@@ -17,8 +18,18 @@ const setupSynth = () => {
     startAudioContext();
     if (!gainNode) {
         gainNode = audioContext.createGain();
-        gainNode.connect(audioContext.destination);
-        console.log('Synth setup complete with gain node connected.');
+        delayNode = audioContext.createDelay();
+        feedbackNode = audioContext.createGain();
+
+        delayNode.delayTime.value = 0.1;  // Delay time for the echo effect
+        feedbackNode.gain.value = 0.5; // Feedback amount (decay level)
+
+        // Connect nodes
+        delayNode.connect(feedbackNode);
+        feedbackNode.connect(delayNode); // Feedback loop
+
+        gainNode.connect(delayNode);
+        delayNode.connect(audioContext.destination);
     }
 }
 
@@ -38,7 +49,7 @@ const playNoise = () => {
     const whiteNoise = audioContext.createBufferSource();
     whiteNoise.buffer = noiseBuffer;
     whiteNoise.loop = true;
-    whiteNoise.connect(gainNode);
+    whiteNoise.connect(delayNode);
 
     whiteNoise.start();
     whiteNoise.stop(audioContext.currentTime + 0.1);
