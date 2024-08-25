@@ -1,22 +1,29 @@
-const startAudioBtn = document.getElementById('start-context');
-const playOscBtn = document.getElementById('play-osc');
+const playNoiseBtn = document.getElementById('play-noise');
 
 let audioContext;
 
-startAudioBtn.addEventListener('click', () => {
-    audioContext = new AudioContext();
-});
+playNoise = () => {
+    if (!audioContext) startAudioContext();
 
-playOsc = () => {
-    if (!audioContext) return;
+    var bufferSize = 2 * audioContext.sampleRate,
+        noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate),
+        output = noiseBuffer.getChannelData(0);
+    for (var i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+    }
 
-    const oscillator = audioContext.createOscillator();
-    oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-    oscillator.connect(audioContext.destination);
+    var whiteNoise = audioContext.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+    whiteNoise.loop = true;
+    whiteNoise.connect(audioContext.destination);
 
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 2);
+    whiteNoise.start();
+    whiteNoise.stop(audioContext.currentTime + 0.1);
 }
 
-playOscBtn.addEventListener('click', playOsc);
+startAudioContext = () => {
+    audioContext = new AudioContext();
+    console.log(audioContext.sampleRate);
+}
+
+playNoiseBtn.addEventListener('click', playNoise);
