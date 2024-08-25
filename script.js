@@ -54,6 +54,7 @@ const playNoise = () => {
     whiteNoise.buffer = noiseBuffer;
     whiteNoise.loop = true;
     whiteNoise.connect(delayNode);
+    // whiteNoise.connect(audioContext.destination);
 
     whiteNoise.start();
     whiteNoise.stop(audioContext.currentTime + 0.01); 
