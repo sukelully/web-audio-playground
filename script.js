@@ -17,86 +17,48 @@ const freqValue = document.getElementById('freq-value');
 const qSlider = document.getElementById('q-slider');
 const qValue = document.getElementById('q-value');
 
-// Start audio context, connect nodes
-const setupAudio = () => {
-    // Start audio context and log device sample rate
-    audioContext = new AudioContext();
-    console.log(`Audio context started with sample rate: ${audioContext.sampleRate}`);
-
-    // Initialise K-S algorithm nodes
-    delayNode = audioContext.createDelay();
-    gainNode = audioContext.createGain();
-    feedbackNode = audioContext.createGain();
-    filterNode = audioContext.createBiquadFilter();
-
-    // Set default algorithm values
-    delayNode.delayTime.value = 0.001;
-    gainNode.gain.value = 0.4;
-    feedbackNode.gain.value = 0.8;
-    filterNode.type = 'lowpass';
-    filterNode.frequency.value = 500;
-    filterNode.Q.value = 0;
-
-    // Routes nodes
-    feedbackNode.connect(delayNode);
-    delayNode.connect(filterNode);
-    filterNode.connect(feedbackNode);
-    feedbackNode.connect(audioContext.destination);
-    
-}
-
 // Play white noise burst
 const playNoise = () => {
     // Start audio context if there isn't an instance already
     if (!audioContext) {
-        setupAudio();
+        audioContext = new AudioContext();
     }
 
-    const frequency = 200;
+    const frequency = 100;
     const delaySamples = Math.round(audioContext.sampleRate / frequency);
     const delayBuffer = new Float32Array(delaySamples);
     let dbIndex = 0;
-    const gain = 0.99;
+    const gain = 0.9 ;
 
-    // Create a buffer and fill with random noise values
+    // Create an AudioBuffer and fill with processed noise values
     const bufferSize = audioContext.sampleRate;
     const outputBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const output = outputBuffer.getChannelData(0);
 
+    // Fill the delay buffer and the output buffer
+
     for (let i = 0; i < bufferSize; i++) {
-        const sample = Math.random() * 2 - 1;
-        delayBuffer[dbIndex] = sample + gain * 
-        (delayBuffer[dbIndex] + delayBuffer[(dbIndex + 1) % delaySamples]) / 2;
+        let sample;
+        if (i < 480) {
+            sample = Math.random() * 2 - 1;
+        } else {
+            sample = 0;
+        }
+        delayBuffer[dbIndex] = sample + gain *
+            (delayBuffer[dbIndex] + delayBuffer[(dbIndex + 1) % delaySamples]) / 2;
         output[i] = delayBuffer[dbIndex];
 
         if (++dbIndex >= delaySamples) {
             dbIndex = 0;
         }
     }
-}
 
-const playOsc = () => {
-    if (!audioContext) {
-        setupAudio();
-    }
-
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    const filter = audioContext.createBiquadFilter();
-
-    osc.type = 'sawtooth';
-    osc.frequency.value = 100;
-    filter.type = 'lowpass';
-    filter.frequency.value = 500;
-    gain.gain.value = 0.5;
-
-    osc.connect(gain);
-    gain.connect(filter);
-    filter.connect(audioContext.destination);
-
-    osc.start();
-    osc.stop(audioContext.currentTime + 1);
-}
+    // Create a BufferSourceNode and connect it to the AudioContext's destination
+    const source = audioContext.createBufferSource();
+    source.buffer = outputBuffer; // Assign the AudioBuffer to the source
+    source.connect(audioContext.destination); // Connect to speakers
+    source.start(); // Start playback
+};
 
 delaySlider.oninput = function () {
     delayValue.innerHTML = this.value;
@@ -130,7 +92,6 @@ playNoiseBtn.addEventListener('click', playNoise);
 window.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {
         playNoise();
-        // playOsc();
     }
 });
 
