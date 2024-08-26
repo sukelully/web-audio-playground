@@ -31,6 +31,7 @@ const playFreq = (freq) => {
         const noiseBurst = audioContext.sampleRate / 100;
         const sample = (i < noiseBurst  ) ? Math.random() * 2 - 1 : 0;
 
+        // Apply lowpass by averaging adjacent delay line samples
         delayBuffer[dbIndex] = sample + feedback *
             (delayBuffer[dbIndex] + delayBuffer[(dbIndex + 1) % delaySamples]) / dampening;
         output[i] = delayBuffer[dbIndex];
@@ -56,12 +57,15 @@ const updateSliderValues = () => {
     feedbackValue.innerHTML = feedbackSlider.value;
 }
 
-// Pluck string when spacebar is pressed
+// Play notes when string is pressed
 window.addEventListener('keydown', (e) => {
     let octave = 2;
     switch (e.code) {
-        case 'Space':
-            playFreq(100.00 * octave);
+        case 'KeyA':        // D3
+            playFreq(73.42 * octave);
+            break;
+        case 'KeyS':        // E3
+            playFreq(82.41 * octave);
             break;
         case 'KeyD':        // G3
             playFreq(98.00 * octave);
