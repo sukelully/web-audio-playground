@@ -34,17 +34,15 @@ const setupAudio = () => {
     gainNode.gain.value = 0.4;
     feedbackNode.gain.value = 0.8;
     filterNode.type = 'lowpass';
-    filterNode.frequency = 500;
-    filterNode.Q.value = 0.0001;
+    filterNode.frequency.value = 500;
+    filterNode.Q.value = 0;
 
     // Routes nodes
-    gainNode.connect(delayNode);
-    delayNode.connect(feedbackNode);
-    feedbackNode.connect(filterNode);
-    filterNode.connect(delayNode);
-    filterNode.connect(audioContext.destination);
-
+    feedbackNode.connect(delayNode);
+    delayNode.connect(filterNode);
+    filterNode.connect(feedbackNode);
     feedbackNode.connect(audioContext.destination);
+    
 }
 
 // Play white noise burst
@@ -54,8 +52,14 @@ const playNoise = () => {
         setupAudio();
     }
 
+    const frequency = 440;
+    const delaySamples = Math.round(audioContext.sampleRate / frequency);
+    const delayBuffer = new Float32Array(delaySamples);
+    let dbIndex = 0;
+    const gain = 0.9;
+
     // Create a buffer and fill with random noise values
-    const bufferSize = 2 * audioContext.sampleRate;
+    const bufferSize = audioContext.sampleRate;
     const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const output = noiseBuffer.getChannelData(0);
 
@@ -67,7 +71,7 @@ const playNoise = () => {
     noiseNode = audioContext.createBufferSource();
     noiseNode.buffer = noiseBuffer;
     noiseNode.loop = true;
-    noiseNode.connect(gainNode);
+    noiseNode.connect(feedbackNode);
 
 
     noiseNode.start();
@@ -86,10 +90,12 @@ const playOsc = () => {
     osc.type = 'sawtooth';
     osc.frequency.value = 100;
     filter.type = 'lowpass';
+    filter.frequency.value = 500;
     gain.gain.value = 0.5;
 
     osc.connect(gain);
-    gain.connect(audioContext.destination);
+    gain.connect(filter);
+    filter.connect(audioContext.destination);
 
     osc.start();
     osc.stop(audioContext.currentTime + 1);
@@ -126,8 +132,8 @@ const updateSliderValues = () => {
 playNoiseBtn.addEventListener('click', playNoise);
 window.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {
-        // playNoise();
-        playOsc();
+        playNoise();
+        // playOsc();
     }
 });
 
