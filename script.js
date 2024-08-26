@@ -75,9 +75,21 @@ const playNoise = () => {
 }
 
 const playOsc = () => {
+    if (!audioContext) {
+        setupAudio();
+    }
+
     const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    const filter = audioContext.createBiquadFilter();
+
     osc.type = 'sawtooth';
-    osc.frequency = 800;
+    osc.frequency.value = 100;
+    filter.type = 'lowpass';
+    gain.gain.value = 0.5;
+
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
 
     osc.start();
     osc.stop(audioContext.currentTime + 1);
@@ -114,7 +126,8 @@ const updateSliderValues = () => {
 playNoiseBtn.addEventListener('click', playNoise);
 window.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {
-        playNoise();
+        // playNoise();
+        playOsc();
     }
 });
 
