@@ -23,9 +23,9 @@
         </div>
         <div class="row">
             <div class="col-9 text-center">
-                <input type="range" class="slider" id="delay-slider" min="0.0001" max="0.025" value="0.01" step="0.0001">
+                <input type="range" class="slider" id="delay-slider" min="0.000001" max="0.025" value="0.01" step="0.000001">
                 <br>
-                <span id="delay-value">0.01</span>
+                <span id="delay-value"></span>
             </div>
             <div class="col-3 text-center">
                 <h4>Delay time</h4>
@@ -33,9 +33,10 @@
         </div>
         <div class="row">
             <div class="col-9 text-center">
-                <input type="range" class="slider" id="feedback-slider" min="0.5" max="0.9" value="0.7" step="0.01">
+                <input type="range" class="slider" id="feedback-slider" min="0.5" max="0.9" value="0.8" step="0.01">
                 <br>
-                <span id="feedback-value">0.7</span>
+                <span id="feedback-value">
+                </span>
             </div>
             <div class="col-3 text-center">
                 <h4>Feedback gain</h4>
@@ -43,12 +44,22 @@
         </div>
         <div class="row">
             <div class="col-9 text-center">
-                <input type="range" class="slider" id="freq-slider" min="250" max="3000" value="500" step="1">
+                <input type="range" class="slider" id="freq-slider" min="250" max="10000" value="7000" step="1">
                 <br>
-                <span id="freq-value">7000</span>
+                <span id="freq-value"></span>
             </div>
             <div class="col-3 text-center">
                 <h4>Filter frequency (Hz)</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9 text-center">
+                <input type="range" class="slider" id="q-slider" min="0.00001" max="1" value="0.00001" step="0.00001">
+                <br>
+                <span id="q-value"></span>
+            </div>
+            <div class="col-3 text-center">
+                <h4>Q factor</h4>
             </div>
         </div>
     </div>
