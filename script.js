@@ -55,12 +55,12 @@ const playNoise = () => {
     }
 
     // Create a buffer and fill with random noise values
-    const bufferSize = audioContext.sampleRate;
+    const bufferSize = 2 * audioContext.sampleRate;
     const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const output = noiseBuffer.getChannelData(0);
 
-    for (const sample of output) {
-        sample = Math.random() * 2 - 1;
+    for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
     }
 
     // Create noise node with buffer and connect to K-S delay-line
@@ -72,6 +72,15 @@ const playNoise = () => {
 
     noiseNode.start();
     noiseNode.stop(audioContext.currentTime + 0.01);
+}
+
+const playOsc = () => {
+    const osc = audioContext.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency = 800;
+
+    osc.start();
+    osc.stop(audioContext.currentTime + 1);
 }
 
 delaySlider.oninput = function () {
