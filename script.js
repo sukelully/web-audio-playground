@@ -36,6 +36,7 @@ const playFreq = (freq) => {
             (delayBuffer[dbIndex] + delayBuffer[(dbIndex + 1) % delaySamples]) / dampening;
         output[i] = delayBuffer[dbIndex];
 
+        // Loop delay buffer
         if (++dbIndex >= delaySamples) {
             dbIndex = 0;
         }
