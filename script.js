@@ -8,6 +8,8 @@ const freqValue = document.getElementById('freq-value');
 const qSlider = document.getElementById('q-slider');
 const qValue = document.getElementById('q-value');
 
+// branch test
+
 // Global variables
 let audioContext;
 let noiseNode
