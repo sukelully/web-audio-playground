@@ -28,7 +28,7 @@ const playNoise = () => {
     const delaySamples = Math.round(audioContext.sampleRate / frequency);
     const delayBuffer = new Float32Array(delaySamples);
     let dbIndex = 0;
-    const gain = 0.9 ;
+    const gain = 0.99;
 
     // Create an AudioBuffer and fill with processed noise values
     const bufferSize = audioContext.sampleRate;
@@ -36,14 +36,10 @@ const playNoise = () => {
     const output = outputBuffer.getChannelData(0);
 
     // Fill the delay buffer and the output buffer
-
     for (let i = 0; i < bufferSize; i++) {
-        let sample;
-        if (i < 480) {
-            sample = Math.random() * 2 - 1;
-        } else {
-            sample = 0;
-        }
+        const noiseBurst = audioContext.sampleRate / 100;
+        const sample = (i < noiseBurst) ? Math.random() * 2 - 1 : 0;
+
         delayBuffer[dbIndex] = sample + gain *
             (delayBuffer[dbIndex] + delayBuffer[(dbIndex + 1) % delaySamples]) / 2;
         output[i] = delayBuffer[dbIndex];
