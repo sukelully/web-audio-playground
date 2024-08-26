@@ -10,22 +10,24 @@ const dampeningSlider = document.getElementById('dampening-slider');
 const dampeningValue = document.getElementById('dampening-value');
 
 // Play white noise burst
-const pluckString = (freq) => {
+const playFreq = (freq) => {
     if (!audioContext) {
         audioContext = new AudioContext();
     }
     
+    // Delay line buffer
     const delaySamples = Math.round(audioContext.sampleRate / freq);
     const delayBuffer = new Float32Array(delaySamples);
     let dbIndex = 0;
 
-    // Create an AudioBuffer and fill with processed noise values
+    // 10s output buffer
     const bufferSize =   10 * audioContext.sampleRate;
     const outputBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const output = outputBuffer.getChannelData(0);
 
-    // Fill the delay buffer and the output buffer
+    // Fill delay and output buffer
     for (let i = 0; i < bufferSize; i++) {
+        // Noise burst for 10ms worth of samples
         const noiseBurst = audioContext.sampleRate / 100;
         const sample = (i < noiseBurst  ) ? Math.random() * 2 - 1 : 0;
 
@@ -46,9 +48,8 @@ const pluckString = (freq) => {
 
 feedbackSlider.oninput = function () {
     feedbackValue.innerHTML = this.value;
-    feedbackNode.gain.value = this.value;
+    feedback = this.value;
 }
-
 
 const updateSliderValues = () => {
     dampeningValue.innerHTML = dampeningSlider.value;
@@ -57,8 +58,31 @@ const updateSliderValues = () => {
 
 // Pluck string when spacebar is pressed
 window.addEventListener('keydown', (e) => {
-    if (e.code === 'Space') {
-        pluckString(100);
+    let octave = 2;
+    switch (e.code) {
+        case 'Space':
+            playFreq(100.00 * octave);
+            break;
+        case 'KeyD':        // G3
+            playFreq(98.00 * octave);
+            break;
+        case 'KeyF':        // A3
+            playFreq(110.00 * octave);
+            break;
+        case 'KeyJ':        // C3
+            playFreq(130.81 * octave);
+            break;
+        case 'KeyK':        // D3
+            playFreq(146.83 * octave);
+            break;
+        case 'KeyL':        // E3
+            playFreq(164.81 * octave);
+            break;
+        case 'Semicolon':   // G3
+            playFreq(196.00 * octave)
+            break
+        default:
+            break;
     }
 });
 
