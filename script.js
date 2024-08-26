@@ -52,30 +52,27 @@ const playNoise = () => {
         setupAudio();
     }
 
-    const frequency = 440;
+    const frequency = 200;
     const delaySamples = Math.round(audioContext.sampleRate / frequency);
     const delayBuffer = new Float32Array(delaySamples);
     let dbIndex = 0;
-    const gain = 0.9;
+    const gain = 0.99;
 
     // Create a buffer and fill with random noise values
     const bufferSize = audioContext.sampleRate;
-    const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-    const output = noiseBuffer.getChannelData(0);
+    const outputBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+    const output = outputBuffer.getChannelData(0);
 
     for (let i = 0; i < bufferSize; i++) {
-        output[i] = Math.random() * 2 - 1;
+        const sample = Math.random() * 2 - 1;
+        delayBuffer[dbIndex] = sample + gain * 
+        (delayBuffer[dbIndex] + delayBuffer[(dbIndex + 1) % delaySamples]) / 2;
+        output[i] = delayBuffer[dbIndex];
+
+        if (++dbIndex >= delaySamples) {
+            dbIndex = 0;
+        }
     }
-
-    // Create noise node with buffer and connect to K-S delay-line
-    noiseNode = audioContext.createBufferSource();
-    noiseNode.buffer = noiseBuffer;
-    noiseNode.loop = true;
-    noiseNode.connect(feedbackNode);
-
-
-    noiseNode.start();
-    noiseNode.stop(audioContext.currentTime + 0.01);
 }
 
 const playOsc = () => {
