@@ -12,7 +12,14 @@ const feedbackSlider = document.getElementById('feedback-slider');
 const feedbackValue = document.getElementById('feedback-value');
 const dampeningSlider = document.getElementById('dampening-slider');
 const dampeningValue = document.getElementById('dampening-value');
-const jBtn = document.getElementById('j-btn');
+const lBtn = document.getElementById('l-btn');
+const scBtn = document.getElementById('sc-btn');
+const jBtn = document.getElementById('-btn');
+const kBtn = document.getElementById('k-btn');
+const dBtn = document.getElementById('d-btn');
+const fBtn = document.getElementById('f-btn');
+const sBtn = document.getElementById('s-btn');
+const aBtn = document.getElementById('a-btn');
 
 // Play white noise burst at specified frequency
 const playFreq = (freq) => {
