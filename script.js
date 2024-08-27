@@ -1,5 +1,5 @@
 // Global constants
-const DEFAULT_FEEDBACK = 0.95;
+const DEFAULT_FEEDBACK = 0.99;
 const DEFAULT_DAMPENING = 2;
 
 // State variables
@@ -12,7 +12,7 @@ const feedbackSlider = document.getElementById('feedback-slider');
 const feedbackValue = document.getElementById('feedback-value');
 const dampeningSlider = document.getElementById('dampening-slider');
 const dampeningValue = document.getElementById('dampening-value');
-
+const jBtn = document.getElementById('j-btn');
 
 // Play white noise burst at specified frequency
 const playFreq = (freq) => {
@@ -33,7 +33,8 @@ const playFreq = (freq) => {
     // Fill delay and output buffer
     for (let i = 0; i < bufferSize; i++) {
         // Noise burst for 10ms worth of samples
-        const noiseBurst = audioContext.sampleRate / 100;
+        const noiseVariation = Math.random () * audioContext.sampleRate / 250 - audioContext.sampleRate / 500;
+        const noiseBurst = audioContext.sampleRate / 100 + noiseVariation;
         const sample = (i < noiseBurst  ) ? Math.random() * 2 - 1 : 0;
 
         // Apply lowpass by averaging adjacent delay line samples

@@ -1,2 +1,4 @@
 - [ ] Random amount of time for noise burst
 - [ ] Mobile mode
+- [ ] Can hold notes
+- [ ] Pitch bend with space
