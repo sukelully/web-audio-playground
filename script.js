@@ -1,9 +1,11 @@
 // Global constants
 const DEFAULT_FEEDBACK = 0.99;
 const DEFAULT_DAMPENING = 2;
+const DEFAULT_OCTAVE = 2;
 
 // State variables
 let audioContext;
+let octave = DEFAULT_OCTAVE;
 let feedback = DEFAULT_FEEDBACK;
 let dampening = DEFAULT_DAMPENING;
 
@@ -14,7 +16,7 @@ const dampeningSlider = document.getElementById('dampening-slider');
 const dampeningValue = document.getElementById('dampening-value');
 const lBtn = document.getElementById('l-btn');
 const scBtn = document.getElementById('sc-btn');
-const jBtn = document.getElementById('-btn');
+const jBtn = document.getElementById('j-btn');
 const kBtn = document.getElementById('k-btn');
 const dBtn = document.getElementById('d-btn');
 const fBtn = document.getElementById('f-btn');
@@ -91,9 +93,17 @@ dampeningSlider.oninput = function () {
     dampeningValue.innerHTML = this.value;
 };
 
+lBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyL'] * octave));
+scBtn.addEventListener('click', () => playFreq(keyFrequencyMap['Semicolon'] * octave));
+jBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyJ'] * octave));
+kBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyK'] * octave));
+dBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyD'] * octave));
+fBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyF'] * octave));
+aBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyA'] * octave));
+sBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyS'] * octave));
+
 // Play notes when key is pressed
 window.addEventListener('keydown', (e) => {
-    const octave = 2;
     const freq = keyFrequencyMap[e.code];
     if (freq) {
         playFreq(freq * octave);
