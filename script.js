@@ -1,5 +1,5 @@
 // Global constants
-const DEFAULT_FEEDBACK = 0.99;
+const DEFAULT_FEEDBACK = 0.95;
 const DEFAULT_DAMPENING = 2;
 
 // State variables
