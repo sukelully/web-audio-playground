@@ -2,12 +2,14 @@
 const DEFAULT_FEEDBACK = 0.99;
 const DEFAULT_DAMPENING = 2;
 const DEFAULT_OCTAVE = 2;
+const DEFAULT_VOLUME = 0.5;
 
 // State variables
 let audioContext;
 let octave = DEFAULT_OCTAVE;
 let feedback = DEFAULT_FEEDBACK;
 let dampening = DEFAULT_DAMPENING;
+let volume = DEFAULT_VOLUME;
 
 // References
 const feedbackSlider = document.getElementById('feedback-slider');
@@ -46,7 +48,8 @@ const playFreq = (freq) => {
     for (let i = 0; i < bufferSize; i++) {
         // Noise burst for 10ms worth of samples
         const noiseBurst = audioContext.sampleRate / 100;
-        const sample = (i < noiseBurst  ) ? Math.random() * 2 - 1 : 0;
+        // const sample = (i < noiseBurst  ) ? Math.random() * 2 - 1 : 0;
+        const sample = (i < noiseBurst  ) ? Math.random() * 2 * volume - volume : 0;
 
         // Apply lowpass by averaging adjacent delay line samples
         delayBuffer[dbIndex] = sample + feedback *
