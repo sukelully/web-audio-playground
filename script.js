@@ -22,11 +22,14 @@ const dBtn = document.getElementById('d-btn');
 const fBtn = document.getElementById('f-btn');
 const sBtn = document.getElementById('s-btn');
 const aBtn = document.getElementById('a-btn');
+const srSpan = document.getElementById('device-sr');
 
 // Play white noise burst at specified frequency
 const playFreq = (freq) => {
     if (!audioContext) {
         audioContext = new AudioContext();
+        console.log(audioContext.sampleRate);
+        srSpan.innerHTML = `${audioContext.sampleRate} Hz`;
     }
     
     // Delay line buffer
@@ -78,7 +81,7 @@ const keyFrequencyMap = {
 };
 
 // Update slider values in UI
-const updateSliderValues = () => {
+const updateDisplayValues = () => {
     dampeningValue.innerHTML = dampeningSlider.value;
     feedbackValue.innerHTML = feedbackSlider.value;
 };
@@ -112,4 +115,4 @@ window.addEventListener('keydown', (e) => {
 });
 
 // Initialize UI on page load
-window.addEventListener('DOMContentLoaded', updateSliderValues);
+window.addEventListener('DOMContentLoaded', updateDisplayValues());
