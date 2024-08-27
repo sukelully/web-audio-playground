@@ -42,8 +42,9 @@ const playFreq = (freq) => {
     // Fill delay and output buffer
     for (let i = 0; i < bufferSize; i++) {
         // Noise burst for 10ms worth of samples
-        const noiseVariation = Math.random () * audioContext.sampleRate / 250 - audioContext.sampleRate / 500;
-        const noiseBurst = audioContext.sampleRate / 100 + noiseVariation;
+        // const noiseVariation = Math.random () * audioContext.sampleRate / 250 - audioContext.sampleRate / 500;
+        // const noiseBurst = audioContext.sampleRate / 100 + noiseVariation;
+        const noiseBurst = audioContext.sampleRate / 100;
         const sample = (i < noiseBurst  ) ? Math.random() * 2 - 1 : 0;
 
         // Apply lowpass by averaging adjacent delay line samples
