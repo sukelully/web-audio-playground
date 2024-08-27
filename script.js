@@ -2,7 +2,7 @@
 const DEFAULT_FEEDBACK = 0.99;
 const DEFAULT_DAMPENING = 2;
 const DEFAULT_OCTAVE = 2;
-const DEFAULT_VOLUME = 0.5;
+const DEFAULT_VOLUME = 0.2;
 
 // State variables
 let audioContext;
