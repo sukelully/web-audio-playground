@@ -26,7 +26,7 @@ const sBtn = document.getElementById('s-btn');
 const aBtn = document.getElementById('a-btn');
 const srSpan = document.getElementById('device-sr');
 
-// Play white noise burst at specified frequency
+// Pluck string at specified frequency
 const playFreq = (freq) => {
     if (!audioContext) {
         audioContext = new AudioContext();
