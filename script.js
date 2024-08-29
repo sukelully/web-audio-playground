@@ -1,7 +1,7 @@
 // Global constants
 const DEFAULT_FEEDBACK = 0.99;
 const DEFAULT_DAMPENING = 2;
-const DEFAULT_OCTAVE = 2;
+const DEFAULT_OCTAVE = 1;
 const DEFAULT_VOLUME = 0.2;
 
 // State variables
@@ -10,6 +10,7 @@ let octave = DEFAULT_OCTAVE;
 let feedback = DEFAULT_FEEDBACK;
 let dampening = DEFAULT_DAMPENING;
 let volume = DEFAULT_VOLUME;
+let activeKeys = new Set(); // Set to track active keys
 
 // References
 const feedbackSlider = document.getElementById('feedback-slider');
@@ -40,7 +41,7 @@ const playFreq = (freq) => {
     let dbIndex = 0;
 
     // 7s output buffer
-    const bufferSize =   7 * audioContext.sampleRate;
+    const bufferSize = 7 * audioContext.sampleRate;
     const outputBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const output = outputBuffer.getChannelData(0);
 
@@ -48,8 +49,7 @@ const playFreq = (freq) => {
     for (let i = 0; i < bufferSize; i++) {
         // Noise burst for 10ms worth of samples
         const noiseBurst = audioContext.sampleRate / 100;
-        // const sample = (i < noiseBurst  ) ? Math.random() * 2 - 1 : 0;
-        const sample = (i < noiseBurst  ) ? Math.random() * 2 * volume - volume : 0;
+        const sample = (i < noiseBurst) ? Math.random() * 2 * volume - volume : 0;
 
         // Apply lowpass by averaging adjacent delay line samples
         delayBuffer[dbIndex] = sample + feedback *
@@ -108,11 +108,16 @@ aBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyA'] * octave))
 sBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyS'] * octave));
 
 // Play notes when key is pressed
-window.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', (e) => {
     const freq = keyFrequencyMap[e.code];
-    if (freq) {
+    if (freq && !activeKeys.has(e.code)) {
+        activeKeys.add(e.code); // Mark key as pressed
         playFreq(freq * octave);
     }
+});
+
+document.addEventListener('keyup', (e) => {
+    activeKeys.delete(e.code); // Mark key as released
 });
 
 // Initialize UI on page load
