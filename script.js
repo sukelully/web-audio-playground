@@ -1,7 +1,7 @@
 // Global constants
 const DEFAULT_FEEDBACK = 0.99;
 const DEFAULT_DAMPENING = 2;
-const DEFAULT_OCTAVE = 1;
+const DEFAULT_OCTAVE = 2;
 const DEFAULT_VOLUME = 0.2;
 
 // State variables
@@ -15,8 +15,6 @@ let activeKeys = new Set(); // Set to track active keys
 // References
 const feedbackSlider = document.getElementById('feedback-slider');
 const feedbackValue = document.getElementById('feedback-value');
-const dampeningSlider = document.getElementById('dampening-slider');
-const dampeningValue = document.getElementById('dampening-value');
 const lBtn = document.getElementById('l-btn');
 const scBtn = document.getElementById('sc-btn');
 const jBtn = document.getElementById('j-btn');
@@ -83,7 +81,6 @@ const keyFrequencyMap = {
 
 // Update slider values in UI
 const updateDisplayValues = () => {
-    dampeningValue.innerHTML = dampeningSlider.value;
     feedbackValue.innerHTML = feedbackSlider.value;
 };
 
@@ -91,11 +88,6 @@ const updateDisplayValues = () => {
 feedbackSlider.oninput = function () {
     feedback = parseFloat(this.value);
     feedbackValue.innerHTML = this.value;
-};
-
-dampeningSlider.oninput = function () {
-    dampening = parseFloat(this.value);
-    dampeningValue.innerHTML = this.value;
 };
 
 lBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyL'] * octave));
