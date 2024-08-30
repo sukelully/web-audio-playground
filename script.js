@@ -100,7 +100,7 @@ aBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyA'] * octave))
 sBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyS'] * octave));
 
 // Play notes when key is pressed
-document.addEventListener('keydown', (e) => {
+window.addEventListener('keydown', (e) => {
     const freq = keyFrequencyMap[e.code];
     if (freq && !activeKeys.has(e.code)) {
         activeKeys.add(e.code); // Mark key as pressed
@@ -108,8 +108,9 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-document.addEventListener('keyup', (e) => {
-    activeKeys.delete(e.code); // Mark key as released
+
+window.addEventListener('keyup', (e) => {
+    activeKeys.delete(e.code);
 });
 
 // Initialize UI on page load
