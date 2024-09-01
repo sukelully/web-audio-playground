@@ -106,7 +106,6 @@ dampeningSlider.oninput = (e) => {
 echoSlider.oninput = (e) => {
     echo = parseFloat(e.target.value);
     echoValue.innerHTML = e.target.value;
-    console.log(e.target.value);
 }
 
 lBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyL'] * octave));
