@@ -114,4 +114,4 @@ window.addEventListener('keyup', (e) => {
 });
 
 // Initialize UI on page load
-window.addEventListener('DOMContentLoaded', updateDisplayValues());d
+window.addEventListener('DOMContentLoaded', updateDisplayValues());
