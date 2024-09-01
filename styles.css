@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+:root {
+    --grey: #e3e3e3;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -25,7 +29,12 @@ html, body {
 
 .container {
     margin-top: 5em;
-    /* border: 1px solid black; */
+    max-width: 960px; /* Example width */
+    width: 100%; /* Ensure it takes full width on smaller screens */
+    background-color: var(--grey);
+    border-radius: 15px;
+    padding: 2em;
+    gap: 1em;
 }
 
 .string-key {
@@ -36,4 +45,11 @@ html, body {
 
 #title {
     /* margin: 1em  0; */
+}
+
+/* Mobile */
+@media (min-width: 768px) {
+    .custom-container {
+        max-width: 800px; /* Reduce width further on larger screens */
+    }
 }
