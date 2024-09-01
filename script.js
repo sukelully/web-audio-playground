@@ -42,6 +42,12 @@ const playFreq = (freq) => {
     const bufferSize = 7 * audioContext.sampleRate;
     const outputBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const output = outputBuffer.getChannelData(0);
+    
+    const echo = audioContext.createDelay();
+    const echoGain = audioContext.createGain();
+
+    echo.delayTime.value = 1;
+    echoGain.gain.value = 0.5;
 
     // Fill delay and output buffer
     for (let i = 0; i < bufferSize; i++) {
@@ -64,6 +70,10 @@ const playFreq = (freq) => {
     const source = audioContext.createBufferSource();
     source.buffer = outputBuffer;
     source.connect(audioContext.destination);
+    source.connect(echo);
+    echo.connect(echoGain);
+    echoGain.connect(echo);
+    echoGain.connect(audioContext.destination);
     source.start();
 };
 
