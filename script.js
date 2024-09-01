@@ -1,20 +1,22 @@
 // Global constants
-const DEFAULT_FEEDBACK = 0.99;
-const DEFAULT_DAMPENING = 2;
+const DEFAULT_DAMPENING = 0.99;
 const DEFAULT_OCTAVE = 2;
 const DEFAULT_VOLUME = 0.2;
+const DEFAULT_ECHO = 0.5;
 
 // State variables
 let audioContext;
 let octave = DEFAULT_OCTAVE;
-let feedback = DEFAULT_FEEDBACK;
 let dampening = DEFAULT_DAMPENING;
+let echo = DEFAULT_ECHO;
 let volume = DEFAULT_VOLUME;
 let activeKeys = new Set(); // Set to track active keys
 
 // References
-const feedbackSlider = document.getElementById('feedback-slider');
-const feedbackValue = document.getElementById('feedback-value');
+const dampeningSlider = document.getElementById('dampening-slider');
+const dampeningValue = document.getElementById('dampening-value');
+const echoSlider = document.getElementById('echo-slider');
+const echoValue = document.getElementById('echo-value');
 const lBtn = document.getElementById('l-btn');
 const scBtn = document.getElementById('sc-btn');
 const jBtn = document.getElementById('j-btn');
@@ -43,10 +45,10 @@ const playFreq = (freq) => {
     const outputBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const output = outputBuffer.getChannelData(0);
     
-    const echo = audioContext.createDelay();
+    const echoNode = audioContext.createDelay();
     const echoGain = audioContext.createGain();
 
-    echo.delayTime.value = 1;
+    echoNode.delayTime.value = echo; // Use the updated echo value
     echoGain.gain.value = 0.5;
 
     // Fill delay and output buffer
@@ -56,8 +58,8 @@ const playFreq = (freq) => {
         const sample = (i < noiseBurst) ? Math.random() * 2 * volume - volume : 0;
 
         // Apply lowpass by averaging adjacent delay line samples
-        delayBuffer[dbIndex] = sample + feedback *
-            (delayBuffer[dbIndex] + delayBuffer[(dbIndex + 1) % delaySamples]) / dampening;
+        delayBuffer[dbIndex] = sample + dampening *
+            (delayBuffer[dbIndex] + delayBuffer[(dbIndex + 1) % delaySamples]) / 2;
         output[i] = delayBuffer[dbIndex];
 
         // Loop delay buffer
@@ -70,9 +72,9 @@ const playFreq = (freq) => {
     const source = audioContext.createBufferSource();
     source.buffer = outputBuffer;
     source.connect(audioContext.destination);
-    source.connect(echo);
-    echo.connect(echoGain);
-    echoGain.connect(echo);
+    source.connect(echoNode);
+    echoNode.connect(echoGain);
+    echoGain.connect(echoNode);
     echoGain.connect(audioContext.destination);
     source.start();
 };
@@ -91,14 +93,21 @@ const keyFrequencyMap = {
 
 // Update slider values in UI
 const updateDisplayValues = () => {
-    feedbackValue.innerHTML = feedbackSlider.value;
+    dampeningValue.innerHTML = dampeningSlider.value;
+    echoValue.innerHTML = echoSlider.value;
 };
 
 // Event listeners for sliders
-feedbackSlider.oninput = function () {
-    feedback = parseFloat(this.value);
-    feedbackValue.innerHTML = this.value;
+dampeningSlider.oninput = (e) => {
+    dampening = parseFloat(e.target.value);
+    dampeningValue.innerHTML = e.target.value;
 };
+
+echoSlider.oninput = (e) => {
+    echo = parseFloat(e.target.value);
+    echoValue.innerHTML = e.target.value;
+    console.log(e.target.value);
+}
 
 lBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyL'] * octave));
 scBtn.addEventListener('click', () => playFreq(keyFrequencyMap['Semicolon'] * octave));
@@ -118,10 +127,9 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-
 window.addEventListener('keyup', (e) => {
     activeKeys.delete(e.code);
 });
 
 // Initialize UI on page load
-window.addEventListener('DOMContentLoaded', updateDisplayValues());
+window.addEventListener('DOMContentLoaded', updateDisplayValues);
