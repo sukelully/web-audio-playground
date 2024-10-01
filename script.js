@@ -95,6 +95,7 @@ const keyFrequencyMap = {
 const updateDisplayValues = () => {
     dampeningValue.innerHTML = dampeningSlider.value;
     echoValue.innerHTML = echoSlider.value;
+    alert("Use the ASDF and JKL; keys to play!");
 };
 
 // Event listeners for sliders
