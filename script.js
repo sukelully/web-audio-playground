@@ -95,28 +95,36 @@ const keyFrequencyMap = {
 const updateDisplayValues = () => {
     dampeningValue.innerHTML = dampeningSlider.value;
     echoValue.innerHTML = echoSlider.value;
-    alert("Use the ASDF and JKL; keys to play!");
+    // alert("Use the ASDF and JKL; keys to play!");
 };
 
-// Event listeners for sliders
-dampeningSlider.oninput = (e) => {
-    dampening = parseFloat(e.target.value);
-    dampeningValue.innerHTML = e.target.value;
+// Handle slider input
+const handleSliderInput = (slider, valueElement, callback) => {
+    slider.oninput = (e) => {
+        const value = parseFloat(e.target.value);
+        callback(value);
+        valueElement.innerHTML = e.target.value;
+    };
 };
 
-echoSlider.oninput = (e) => {
-    echo = parseFloat(e.target.value);
-    echoValue.innerHTML = e.target.value;
-}
+// Initialize sliders
+handleSliderInput(dampeningSlider, dampeningValue, (value) => dampening = value);
+handleSliderInput(echoSlider, echoValue, (value) => echo = value);
 
-lBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyL'] * octave));
-scBtn.addEventListener('click', () => playFreq(keyFrequencyMap['Semicolon'] * octave));
-jBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyJ'] * octave));
-kBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyK'] * octave));
-dBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyD'] * octave));
-fBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyF'] * octave));
-aBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyA'] * octave));
-sBtn.addEventListener('click', () => playFreq(keyFrequencyMap['KeyS'] * octave));
+// Handle button click
+const handleButtonClick = (button, key) => {
+    button.addEventListener('click', () => playFreq(keyFrequencyMap[key] * octave));
+};
+
+// Initialize buttons
+handleButtonClick(lBtn, 'KeyL');
+handleButtonClick(scBtn, 'Semicolon');
+handleButtonClick(jBtn, 'KeyJ');
+handleButtonClick(kBtn, 'KeyK');
+handleButtonClick(dBtn, 'KeyD');
+handleButtonClick(fBtn, 'KeyF');
+handleButtonClick(aBtn, 'KeyA');
+handleButtonClick(sBtn, 'KeyS');
 
 // Play notes when key is pressed
 window.addEventListener('keydown', (e) => {
