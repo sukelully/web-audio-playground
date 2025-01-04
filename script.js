@@ -17,6 +17,7 @@ const dampeningSlider = document.getElementById('dampening-slider');
 const dampeningValue = document.getElementById('dampening-value');
 const echoSlider = document.getElementById('echo-slider');
 const echoValue = document.getElementById('echo-value');
+const delayBtn = document.getElementById('delay-btn');
 const lBtn = document.getElementById('l-btn');
 const scBtn = document.getElementById('sc-btn');
 const jBtn = document.getElementById('j-btn');
