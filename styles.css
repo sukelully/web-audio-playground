@@ -54,6 +54,16 @@ html, body {
     margin: 0.5em 0;
 }
 
+#delay-btn {
+    background-color: var(--warm-black);
+    color: var(--grey);
+}
+
+/* #delay-btn:hover {
+    background-color: initial;
+    border-color: var(--warm-black);
+} */
+
 /* Mobile buttons */
 .btns-1 {
     background-color: var(--btns-1);

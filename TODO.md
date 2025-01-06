@@ -4,4 +4,4 @@
 - [ ] Pitch bend with space
 - [ ] Limit the number of strings (buffers) - one string per note
 - [ ] Delay toggle
-- [ ] Study callback and currying
+- [x] Study callback and currying

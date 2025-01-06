@@ -10,6 +10,7 @@ let octave = DEFAULT_OCTAVE;
 let dampening = DEFAULT_DAMPENING;
 let echo = DEFAULT_ECHO;
 let volume = DEFAULT_VOLUME;
+let delayOn = true;
 let activeKeys = new Set(); // Set to track active keys
 
 // References
@@ -116,6 +117,16 @@ handleSliderInput(echoSlider, echoValue, (value) => echo = value);
 const handleButtonClick = (button, key) => {
     button.addEventListener('click', () => playFreq(keyFrequencyMap[key] * octave));
 };
+
+delayBtn.addEventListener('click', () => {
+    delayOn = !delayOn;
+    console.log(delayOn);
+    if (delayOn) {
+        delayBtn.style.backgroundColor = '#e3e3e3';
+    } else {
+        delayBtn.style.backgroundColor = '#2d2121';
+    }
+});
 
 // Initialize buttons
 handleButtonClick(lBtn, 'KeyL');
