@@ -6,6 +6,8 @@ const DEFAULT_ECHO = 0.5;
 
 // State variables
 let audioContext;
+let source;
+let echoNode;
 let octave = DEFAULT_OCTAVE;
 let dampening = DEFAULT_DAMPENING;
 let echo = DEFAULT_ECHO;
@@ -47,7 +49,7 @@ const playFreq = (freq) => {
     const outputBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const output = outputBuffer.getChannelData(0);
     
-    const echoNode = audioContext.createDelay();
+    echoNode = audioContext.createDelay();
     const echoGain = audioContext.createGain();
 
     echoNode.delayTime.value = echo; // Use the updated echo value
@@ -71,7 +73,7 @@ const playFreq = (freq) => {
     }
 
     // Connect to output and play
-    const source = audioContext.createBufferSource();
+    source = audioContext.createBufferSource();
     source.buffer = outputBuffer;
     source.connect(audioContext.destination);
     source.connect(echoNode);
@@ -123,8 +125,14 @@ delayBtn.addEventListener('click', () => {
     console.log(delayOn);
     if (delayOn) {
         delayBtn.style.backgroundColor = '#e3e3e3';
+        delayBtn.style.color = '#2d2121';
+        source.connect(audioContext.destination);
+        source.connect(echoNode);
     } else {
         delayBtn.style.backgroundColor = '#2d2121';
+        delayBtn.style.color = '#e3e3e3';
+        source.disconnect();
+        source.connect(audioContext.destination);
     }
 });
 
