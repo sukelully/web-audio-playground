@@ -5,3 +5,4 @@
 - [ ] Limit the number of strings (buffers) - one string per note
 - [ ] Delay toggle
 - [x] Study callback and currying
+- [ ] Needs a lot of rework
